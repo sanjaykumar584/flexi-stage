@@ -35,6 +35,7 @@ import {
   arrayMove,
   useSortable,
   verticalListSortingStrategy,
+  horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
@@ -144,7 +145,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <header className="border-b bg-gradient-to-b from-primary/10 to-background">
         <div className="container py-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -199,7 +200,7 @@ const Index = () => {
                   {components.map((comp) => (
                     <DraggableRow key={comp.id} id={comp.id}>
                       {({ handleProps }) => (
-                        <Card>
+                        <Card className="animate-fade-in bg-card/90 border border-border/60 shadow-xl">
                           <CardHeader className="py-3">
                             <div className="flex items-center gap-3">
                               <button
@@ -227,31 +228,32 @@ const Index = () => {
                                     >
                                       <SortableContext
                                         items={comp.series.map((s) => s.id)}
-                                        strategy={verticalListSortingStrategy}
+                                        strategy={horizontalListSortingStrategy}
                                       >
-                                        <ul className="space-y-2">
+                                        <ul className="flex gap-3 overflow-x-auto py-1">
                                           {comp.series.map((s) => (
                                             <DraggableRow key={s.id} id={s.id}>
                                               {({ handleProps }) => (
-                                                <li className="flex items-center justify-between rounded-md border bg-card text-card-foreground px-3 py-2">
-                                                  <div className="flex items-center gap-3">
-                                                    <button
-                                                      aria-label="Drag to reorder series"
-                                                      className="text-muted-foreground hover:text-foreground transition-colors"
-                                                      {...handleProps}
-                                                    >
-                                                      <GripVertical className="h-4 w-4" />
-                                                    </button>
-                                                    {s.mediaUrl ? (
-                                                      <img
-                                                        src={s.mediaUrl}
-                                                        alt={s.title ?? "series image"}
-                                                        style={{ maxWidth: 80, maxHeight: 80, borderRadius: 8 }}
-                                                      />
-                                                    ) : (
-                                                      <span className="text-sm text-muted-foreground">No image</span>
-                                                    )}
-                                                    <span className="text-sm font-medium">{s.title}</span>
+                                                <li className="min-w-[220px] flex items-center gap-3 rounded-md border bg-card/80 backdrop-blur text-card-foreground p-3 shadow-md transition-transform hover:scale-[1.02]">
+                                                  <button
+                                                    aria-label="Drag to reorder series"
+                                                    className="text-muted-foreground hover:text-foreground transition-colors"
+                                                    {...handleProps}
+                                                  >
+                                                    <GripVertical className="h-4 w-4" />
+                                                  </button>
+                                                  {s.mediaUrl ? (
+                                                    <img
+                                                      src={s.mediaUrl}
+                                                      alt={s.title ? s.title : "series thumbnail"}
+                                                      className="h-20 w-20 rounded-md object-cover border"
+                                                      loading="lazy"
+                                                    />
+                                                  ) : (
+                                                    <div className="h-20 w-20 rounded-md border bg-muted" />
+                                                  )}
+                                                  <div className="flex-1 min-w-0">
+                                                    <span className="block text-sm font-medium truncate">{s.title ?? "Untitled"}</span>
                                                   </div>
                                                 </li>
                                               )}
