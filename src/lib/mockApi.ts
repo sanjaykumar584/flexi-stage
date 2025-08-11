@@ -20,57 +20,59 @@ export type ComponentItem = {
 
 let sections: Section[] = [];
 
-const componentsBySection: Record<string, ComponentItem[]> = {};
-
-// Fallback demo data (used when API fails or is unreachable)
-const fallbackSections: Section[] = [
-  { id: "singing", name: "Singing" },
-  { id: "acting", name: "Acting" },
-];
-
-const fallbackComponents: Record<string, ComponentItem[]> = {
-  singing: [
-    {
-      id: "vocals",
-      name: "Vocal Warmups",
-      sectionId: "singing",
-      series: [
-        { id: "vw-1", title: "Lip Trills", mediaUrl: "/placeholder.svg" },
-        { id: "vw-2", title: "Humming Scales", mediaUrl: "/placeholder.svg" },
-        { id: "vw-3", title: "Sirens", mediaUrl: "/placeholder.svg" },
-      ],
-    },
-    {
-      id: "breathing",
-      name: "Breathing Exercises",
-      sectionId: "singing",
-      series: [
-        { id: "be-1", title: "Box Breathing", mediaUrl: "/placeholder.svg" },
-        { id: "be-2", title: "Diaphragmatic", mediaUrl: "/placeholder.svg" },
-        { id: "be-3", title: "Sustained Notes", mediaUrl: "/placeholder.svg" },
-      ],
-    },
-  ],
-  acting: [
-    {
-      id: "method",
-      name: "Method Acting Basics",
-      sectionId: "acting",
-      series: [
-        { id: "ma-1", title: "Sense Memory", mediaUrl: "/placeholder.svg" },
-        { id: "ma-2", title: "Emotional Recall", mediaUrl: "/placeholder.svg" },
-      ],
-    },
-    {
-      id: "scenes",
-      name: "Scene Study",
-      sectionId: "acting",
-      series: [
-        { id: "ss-1", title: "Beat Breakdown", mediaUrl: "/placeholder.svg" },
-        { id: "ss-2", title: "Objective & Obstacle", mediaUrl: "/placeholder.svg" },
-      ],
-    },
-  ],
+const componentsBySection: Record<string, ComponentItem[]> = {
+  // singing: [
+  //   {
+  //     id: "vocals",
+  //     name: "Vocal Warmups",
+  //     sectionId: "singing",
+  //     series: [
+  //       { id: "vw-1", title: "Lip Trills" },
+  //       { id: "vw-2", title: "Humming Scales" },
+  //       { id: "vw-3", title: "Sirens" },
+  //     ],
+  //   },
+  //   {
+  //     id: "breathing",
+  //     name: "Breathing Exercises",
+  //     sectionId: "singing",
+  //     series: [
+  //       { id: "be-1", title: "Box Breathing" },
+  //       { id: "be-2", title: "Diaphragmatic Breathing" },
+  //       { id: "be-3", title: "Sustained Notes" },
+  //     ],
+  //   },
+  //   {
+  //     id: "pitch",
+  //     name: "Pitch Training",
+  //     sectionId: "singing",
+  //     series: [
+  //       { id: "pt-1", title: "Intervals" },
+  //       { id: "pt-2", title: "Arpeggios" },
+  //     ],
+  //   },
+  // ],
+  // acting: [
+  //   {
+  //     id: "method",
+  //     name: "Method Acting Basics",
+  //     sectionId: "acting",
+  //     series: [
+  //       { id: "ma-1", title: "Sense Memory" },
+  //       { id: "ma-2", title: "Emotional Recall" },
+  //     ],
+  //   },
+  //   {
+  //     id: "scenes",
+  //     name: "Scene Study",
+  //     sectionId: "acting",
+  //     series: [
+  //       { id: "ss-1", title: "Beat Breakdown" },
+  //       { id: "ss-2", title: "Objective & Obstacle" },
+  //       { id: "ss-3", title: "Tactics" },
+  //     ],
+  //   },
+  // ],
 };
 
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -105,8 +107,8 @@ export async function fetchSections(): Promise<Section[]> {
 
     // console.log("Sections:", sections);
   } catch (error) {
-    console.warn("Falling back to demo sections due to fetch error:", error);
-    sections = [...fallbackSections];
+    console.error("Error fetching sections:", error);
+    throw error;
   }
   return sections;
 }
@@ -187,8 +189,8 @@ export async function fetchComponentsBySection(
     console.log("Components by section:", componentsBySection);
   
   } catch (error) {
-    console.warn("Falling back to demo components due to fetch error:", error);
-    componentsBySection[sectionId] = fallbackComponents[sectionId] ?? fallbackComponents["singing"] ?? [];
+    console.error("Error fetching sections:", error);
+    throw error;
   }
 
   return JSON.parse(

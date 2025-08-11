@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { submitOrder, fetchSections, fetchComponentsBySection, type ComponentItem, type Section } from "@/lib/mockApi";
+import { submitOrder } from "../lib/mockApi";
+import {
+  fetchSections,
+  fetchComponentsBySection,
+  type ComponentItem,
+  type Section,
+} from "@/lib/mockApi";
 import {
   Select,
   SelectContent,
