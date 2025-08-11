@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
@@ -167,12 +168,9 @@ const Index = () => {
                 </SelectContent>
               </Select>
             </div>
-            <button
-              className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/80 transition"
-              onClick={() => submitOrder(selectedSection, components)}
-            >
+            <Button onClick={() => submitOrder(selectedSection as string, components)}>
               Submit
-            </button>
+            </Button>
           </div>
         </div>
       </header>

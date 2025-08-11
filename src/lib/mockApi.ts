@@ -7,7 +7,8 @@ export type Section = {
 
 export type Series = {
   id: string;
-  title: string;
+  title?: string;
+  mediaUrl?: string;
 };
 
 export type ComponentItem = {
@@ -157,7 +158,7 @@ export async function fetchComponentsBySection(
         for (let i = 0; i < component.interactionData.items.length; i++) {
           const item = component.interactionData.items[i];
           const itemData = {
-            id: i, 
+            id: String(i), 
             mediaUrl: item.button.media[0].mediaUrl
           };
         compData.series.push(itemData);
