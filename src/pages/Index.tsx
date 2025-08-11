@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { submitOrder } from "../lib/mockApi";
 import {
   fetchSections,
   fetchComponentsBySection,
@@ -166,6 +167,12 @@ const Index = () => {
                 </SelectContent>
               </Select>
             </div>
+            <button
+              className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/80 transition"
+              onClick={() => submitOrder(selectedSection, components)}
+            >
+              Submit
+            </button>
           </div>
         </div>
       </header>
@@ -237,6 +244,15 @@ const Index = () => {
                                                     >
                                                       <GripVertical className="h-4 w-4" />
                                                     </button>
+                                                    {s.mediaUrl ? (
+                                                      <img
+                                                        src={s.mediaUrl}
+                                                        alt={s.title ?? "series image"}
+                                                        style={{ maxWidth: 80, maxHeight: 80, borderRadius: 8 }}
+                                                      />
+                                                    ) : (
+                                                      <span className="text-sm text-muted-foreground">No image</span>
+                                                    )}
                                                     <span className="text-sm font-medium">{s.title}</span>
                                                   </div>
                                                 </li>
