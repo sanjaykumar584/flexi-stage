@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { submitOrder } from "../lib/mockApi";
@@ -41,7 +42,6 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
 import { toast } from "sonner";
-import heroImage from "@/assets/marvel-hero.jpg";
 
 // Draggable row wrapper used for both components and series items
 function DraggableRow({
@@ -149,9 +149,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <header className="relative overflow-hidden border-b bg-gradient-to-b from-primary/10 to-background">
         <img
-          src={heroImage}
-          alt="Cinematic red energy background — Marvel-inspired"
-          className="absolute inset-0 h-full w-full object-cover opacity-25 pointer-events-none"
+          src="/lovable-uploads/9212a595-47d3-4d2a-8d0c-09ee879434e9.png"
+          alt="Marvel heroes silhouettes on red background"
+          className="absolute inset-0 h-full w-full object-cover opacity-30 pointer-events-none"
           loading="lazy"
         />
         <div className="relative container py-8">
@@ -205,63 +205,68 @@ const Index = () => {
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onComponentsDragEnd}>
               <SortableContext items={components.map((c) => c.id)} strategy={verticalListSortingStrategy}>
                 <div className="space-y-4">
-                  {components.map((comp) => (
+                  {components.map((comp, index) => (
                     <DraggableRow key={comp.id} id={comp.id}>
                       {({ handleProps }) => (
-                        <Card onClick={() => document.getElementById(`trigger-${comp.id}`)?.click()} {...handleProps} className="relative animate-fade-in bg-card/90 border border-border/60 shadow-xl cursor-grab active:cursor-grabbing">
-                          <CardHeader className="py-3">
-                            <div className="flex items-center gap-3">
-                              <CardTitle className="text-base">{comp.name}</CardTitle>
-                            </div>
-                          </CardHeader>
-                          <CardContent className="pt-0">
-                            <Accordion type="multiple" className="w-full">
-                              <AccordionItem value={`${comp.id}-series`}>
-                                <AccordionTrigger id={`trigger-${comp.id}`} className="sr-only">Toggle series</AccordionTrigger>
-                                <AccordionContent className="z-50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 rounded-md">
-                                  {comp.series.length === 0 ? (
-                                    <div className="text-sm text-muted-foreground">No series.</div>
-                                  ) : (
-                                    <DndContext
-                                      sensors={sensors}
-                                      collisionDetection={closestCenter}
-                                      onDragEnd={onSeriesDragEnd(comp.id)}
-                                    >
-                                      <SortableContext
-                                        items={comp.series.map((s) => s.id)}
-                                        strategy={horizontalListSortingStrategy}
+                        <div className="flex items-center gap-4">
+                          <div className="flex-shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-sm font-bold">
+                            {index + 1}
+                          </div>
+                          <Card onClick={() => document.getElementById(`trigger-${comp.id}`)?.click()} {...handleProps} className="flex-1 relative animate-fade-in bg-card/90 border border-border/60 shadow-xl cursor-grab active:cursor-grabbing">
+                            <CardHeader className="py-3">
+                              <div className="flex items-center gap-3">
+                                <CardTitle className="text-base">{comp.name}</CardTitle>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                              <Accordion type="multiple" className="w-full">
+                                <AccordionItem value={`${comp.id}-series`}>
+                                  <AccordionTrigger id={`trigger-${comp.id}`} className="sr-only">Toggle series</AccordionTrigger>
+                                  <AccordionContent className="z-50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 rounded-md">
+                                    {comp.series.length === 0 ? (
+                                      <div className="text-sm text-muted-foreground">No series.</div>
+                                    ) : (
+                                      <DndContext
+                                        sensors={sensors}
+                                        collisionDetection={closestCenter}
+                                        onDragEnd={onSeriesDragEnd(comp.id)}
                                       >
-                                        <ul className="flex gap-3 overflow-x-auto py-1">
-                                          {comp.series.map((s) => (
-                                            <DraggableRow key={s.id} id={s.id}>
-                                              {({ handleProps }) => (
-                                                <li {...handleProps} className="min-w-[220px] flex items-center gap-3 rounded-md border bg-card/80 backdrop-blur text-card-foreground p-3 shadow-md transition-transform hover:scale-[1.02] cursor-grab active:cursor-grabbing">
-                                                  {s.mediaUrl ? (
-                                                    <img
-                                                      src={s.mediaUrl}
-                                                      alt={s.title ? s.title : "series thumbnail"}
-                                                      className="h-20 w-20 rounded-md object-cover border"
-                                                      loading="lazy"
-                                                    />
-                                                  ) : (
-                                                    <div className="h-20 w-20 rounded-md border bg-muted" />
-                                                  )}
-                                                  <div className="flex-1 min-w-0">
-                                                    <span className="block text-sm font-medium truncate">{s.title ?? "Untitled"}</span>
-                                                  </div>
-                                                </li>
-                                              )}
-                                            </DraggableRow>
-                                          ))}
-                                        </ul>
-                                      </SortableContext>
-                                    </DndContext>
-                                  )}
-                                </AccordionContent>
-                              </AccordionItem>
-                            </Accordion>
-                          </CardContent>
-                        </Card>
+                                        <SortableContext
+                                          items={comp.series.map((s) => s.id)}
+                                          strategy={horizontalListSortingStrategy}
+                                        >
+                                          <ul className="flex gap-3 overflow-x-auto py-1">
+                                            {comp.series.map((s) => (
+                                              <DraggableRow key={s.id} id={s.id}>
+                                                {({ handleProps }) => (
+                                                  <li {...handleProps} className="min-w-[220px] flex items-center gap-3 rounded-md border bg-card/80 backdrop-blur text-card-foreground p-3 shadow-md transition-transform hover:scale-[1.02] cursor-grab active:cursor-grabbing">
+                                                    {s.mediaUrl ? (
+                                                      <img
+                                                        src={s.mediaUrl}
+                                                        alt={s.title ? s.title : "series thumbnail"}
+                                                        className="h-20 w-20 rounded-md object-cover border"
+                                                        loading="lazy"
+                                                      />
+                                                    ) : (
+                                                      <div className="h-20 w-20 rounded-md border bg-muted" />
+                                                    )}
+                                                    <div className="flex-1 min-w-0">
+                                                      <span className="block text-sm font-medium truncate">{s.title ?? "Untitled"}</span>
+                                                    </div>
+                                                  </li>
+                                                )}
+                                              </DraggableRow>
+                                            ))}
+                                          </ul>
+                                        </SortableContext>
+                                      </DndContext>
+                                    )}
+                                  </AccordionContent>
+                                </AccordionItem>
+                              </Accordion>
+                            </CardContent>
+                          </Card>
+                        </div>
                       )}
                     </DraggableRow>
                   ))}
