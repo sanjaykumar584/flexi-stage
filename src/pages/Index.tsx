@@ -40,6 +40,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import { toast } from "sonner";
+import heroImage from "@/assets/marvel-hero.jpg";
 
 // Draggable row wrapper used for both components and series items
 function DraggableRow({
@@ -145,8 +146,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-gradient-to-b from-primary/10 to-background">
-        <div className="container py-8">
+      <header className="relative overflow-hidden border-b bg-gradient-to-b from-primary/10 to-background">
+        <img
+          src={heroImage}
+          alt="Cinematic red energy background — Marvel-inspired"
+          className="absolute inset-0 h-full w-full object-cover opacity-25 pointer-events-none"
+          loading="lazy"
+        />
+        <div className="relative container py-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-1">Creative Sections: Singing & Acting</h1>
@@ -216,7 +223,7 @@ const Index = () => {
                           <CardContent className="pt-0">
                             <Accordion type="multiple" className="w-full">
                               <AccordionItem value={`${comp.id}-series`}>
-                                <AccordionTrigger>Series inside {comp.name}</AccordionTrigger>
+                                <AccordionTrigger>Series</AccordionTrigger>
                                 <AccordionContent>
                                   {comp.series.length === 0 ? (
                                     <div className="text-sm text-muted-foreground">No series.</div>

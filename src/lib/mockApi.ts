@@ -15,6 +15,7 @@ export type ComponentItem = {
   id: string;
   name: string;
   sectionId: string;
+  tag?: string | null;
   series: Series[];
 };
 
