@@ -38,7 +38,7 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical } from "lucide-react";
+
 import { toast } from "sonner";
 import heroImage from "@/assets/marvel-hero.jpg";
 
@@ -167,7 +167,7 @@ const Index = () => {
                 <SelectTrigger>
                   <SelectValue placeholder={loadingSections ? "Loading sections..." : "Pick a section"} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-50 bg-popover/95 backdrop-blur supports-[backdrop-filter]:bg-popover/80 border">
                   {sections?.map((s) => (
                     <SelectItem key={s.id} value={s.id}>
                       {s.name}
@@ -189,7 +189,7 @@ const Index = () => {
             <h2 id="components-heading" className="text-xl font-semibold">
               Components {currentSectionLabel ? `in ${currentSectionLabel}` : ""}
             </h2>
-            <span className="text-sm text-muted-foreground">Drag the grip to reorder</span>
+            <span className="text-sm text-muted-foreground">Drag anywhere to reorder</span>
           </div>
 
           {loadingComponents ? (
@@ -207,24 +207,17 @@ const Index = () => {
                   {components.map((comp) => (
                     <DraggableRow key={comp.id} id={comp.id}>
                       {({ handleProps }) => (
-                        <Card className="animate-fade-in bg-card/90 border border-border/60 shadow-xl">
+                        <Card onClick={() => document.getElementById(`trigger-${comp.id}`)?.click()} {...handleProps} className="relative animate-fade-in bg-card/90 border border-border/60 shadow-xl cursor-grab active:cursor-grabbing">
                           <CardHeader className="py-3">
                             <div className="flex items-center gap-3">
-                              <button
-                                aria-label="Drag to reorder component"
-                                className="text-muted-foreground hover:text-foreground transition-colors"
-                                {...handleProps}
-                              >
-                                <GripVertical className="h-5 w-5" />
-                              </button>
                               <CardTitle className="text-base">{comp.name}</CardTitle>
                             </div>
                           </CardHeader>
                           <CardContent className="pt-0">
                             <Accordion type="multiple" className="w-full">
                               <AccordionItem value={`${comp.id}-series`}>
-                                <AccordionTrigger>Series</AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionTrigger id={`trigger-${comp.id}`} className="sr-only">Toggle series</AccordionTrigger>
+                                <AccordionContent className="z-50 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 rounded-md">
                                   {comp.series.length === 0 ? (
                                     <div className="text-sm text-muted-foreground">No series.</div>
                                   ) : (
@@ -241,14 +234,7 @@ const Index = () => {
                                           {comp.series.map((s) => (
                                             <DraggableRow key={s.id} id={s.id}>
                                               {({ handleProps }) => (
-                                                <li className="min-w-[220px] flex items-center gap-3 rounded-md border bg-card/80 backdrop-blur text-card-foreground p-3 shadow-md transition-transform hover:scale-[1.02]">
-                                                  <button
-                                                    aria-label="Drag to reorder series"
-                                                    className="text-muted-foreground hover:text-foreground transition-colors"
-                                                    {...handleProps}
-                                                  >
-                                                    <GripVertical className="h-4 w-4" />
-                                                  </button>
+                                                <li {...handleProps} className="min-w-[220px] flex items-center gap-3 rounded-md border bg-card/80 backdrop-blur text-card-foreground p-3 shadow-md transition-transform hover:scale-[1.02] cursor-grab active:cursor-grabbing">
                                                   {s.mediaUrl ? (
                                                     <img
                                                       src={s.mediaUrl}
