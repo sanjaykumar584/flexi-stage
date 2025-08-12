@@ -147,11 +147,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative overflow-hidden border-b bg-gradient-to-b from-primary/10 to-background">
+      <header className="relative overflow-hidden border-b bg-gradient-to-b from-primary/10 to-background min-h-72">
         <img
           src="/lovable-uploads/9212a595-47d3-4d2a-8d0c-09ee879434e9.png"
           alt="Marvel heroes silhouettes on red background"
-          className="absolute inset-0 h-full w-full object-cover opacity-30 pointer-events-none"
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-30 pointer-events-none"
           loading="lazy"
         />
         <div className="relative container py-8">
