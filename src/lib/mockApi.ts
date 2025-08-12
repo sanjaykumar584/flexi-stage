@@ -138,19 +138,21 @@ export async function fetchComponentsBySection(
     componentsBySection[sectionId] = [];
     for (const component of componenents) {
       const compData = {
-      id: component._id,
-      name: component.title ? component.title : component.componentKey,
-      sectionId: sectionId,
-      series: []
+        id: component._id,
+        name: component.title ? component.title : component.componentKey,
+        tag: component.tag ? component.tag.tagName : null,
+        sectionId: sectionId,
+        series: []
       }
       componentsBySection[compData.sectionId].push(compData);
 
-      // console.log("Component data:", component);
+      console.log("Component data:", component);
 
       if (component.componentKey == 'single-ad-banner' || component.componentKey == 'full-size-banner') {
         const seriesData = {
           id: component._id,
-          mediaUrl:  component.media.mediaUrl
+          mediaUrl: component.media.mediaUrl,
+          // title:
         }
         compData.series.push(seriesData);
       }
@@ -169,7 +171,7 @@ export async function fetchComponentsBySection(
         component.componentKey == 'upcoming-series-card') {
         for (let i = 0; i < component.actionData.length; i++) { 
           const item = {
-            id: component.actionData[i].taskDetail._id,
+            id: component.actionData[i].processId,
             mediaUrl: component.actionData[i].thumbnail,
           } 
         compData.series.push(item);
@@ -200,13 +202,27 @@ export async function fetchComponentsBySection(
 
 export async function submitOrder(sectionId: string, compData: ComponentItem[]) {
   try {
+    console.log("compData:", compData);
+
+    // Create a payload that includes both component order and series order
     const payload = {
-      components: compData.map((item) => ({
+      components: compData.map((item, compIndex) => ({
         componentId: {
           $oid: item.id
-        }
+        },
+        order: compIndex + 1,
+        tag: item.tag ? item.tag : null,
+        series: item.series.map((seriesItem, seriesIndex) => ({
+          seriesId: {
+            $oid: seriesItem.id
+          },
+          order: seriesIndex + 1
+        }))
       }))
     };
+    console.log(payload)
+    // Update the local componentsBySection object with the new order
+    componentsBySection[sectionId] = JSON.parse(JSON.stringify(compData));
     
     const token = import.meta.env.VITE_AUTH_TOKEN;
     const res = await axios.post(import.meta.env.VITE_UPDATE_COMP + sectionId,
@@ -215,12 +231,12 @@ export async function submitOrder(sectionId: string, compData: ComponentItem[]) 
         headers: {
           Authorization: `Bearer ${token}`,
           "accept": "application/json, text/plain, /",
+          "Content-Type": "application/json"
         },
       }
     );
     
-    console.log("Submitting order for section:", sectionId, payload);
-    console.log("Response from order submission:", res.data);
+    return res.data;
   } catch (error) {
     console.error("Error processing components:", error);
     throw error;
