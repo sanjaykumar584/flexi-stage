@@ -42,6 +42,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
 import { toast } from "sonner";
+import marvelHero from "../assets/marvel-hero.jpg";
 
 // Draggable row wrapper used for both components and series items
 function DraggableRow({
@@ -147,17 +148,17 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="relative overflow-hidden border-b bg-gradient-to-b from-primary/10 to-background min-h-72">
-        <img
-          src="/lovable-uploads/9212a595-47d3-4d2a-8d0c-09ee879434e9.png"
-          alt="Marvel heroes silhouettes on red background"
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-30 pointer-events-none"
-          loading="lazy"
-        />
+      <header className="relative overflow-hidden border-b bg-gradient-to-b from-primary/10 to-background min-h-60">
+                 <img
+           src={marvelHero}
+           alt="Marvel heroes silhouettes on red background"
+           className="absolute inset-0 h-full w-full object-cover object-center opacity-30 pointer-events-none"
+           loading="lazy"
+         />
         <div className="relative container py-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold mb-1">Creative Sections: Singing & Acting</h1>
+              <h1 className="text-3xl font-bold mb-1">HomePage Reorder</h1>
               <p className="text-muted-foreground">
                 Choose a section and manage the order of components and their series.
               </p>
