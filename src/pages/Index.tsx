@@ -38,6 +38,7 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
 
 import { toast } from "sonner";
 import heroImage from "@/assets/marvel-hero.jpg";
