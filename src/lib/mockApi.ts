@@ -138,6 +138,7 @@ export async function fetchComponentsBySection(
 
     componentsBySection[sectionId] = [];
     for (const component of componenents) {
+      console.log("Component:", component);
       const compData = {
         id: component._id,
         name: component.title ? component.title : component.componentKey,
@@ -147,13 +148,11 @@ export async function fetchComponentsBySection(
       }
       componentsBySection[compData.sectionId].push(compData);
 
-      console.log("Component data:", component);
-
       if (component.componentKey == 'single-ad-banner' || component.componentKey == 'full-size-banner') {
         const seriesData = {
           id: component._id,
           mediaUrl: component.media.mediaUrl,
-          // title:
+          title: component.navigation.page ? component.navigation.page : component.navigation.type
         }
         compData.series.push(seriesData);
       }
@@ -162,7 +161,8 @@ export async function fetchComponentsBySection(
           const item = component.interactionData.items[i];
           const itemData = {
             id: String(i), 
-            mediaUrl: item.button.media[0].mediaUrl
+            mediaUrl: item.button.media[0].mediaUrl,
+          title: component.interactionData.items[i].type,
           };
         compData.series.push(itemData);
         }
@@ -174,6 +174,7 @@ export async function fetchComponentsBySection(
           const item = {
             id: component.actionData[i].processId,
             mediaUrl: component.actionData[i].thumbnail,
+            title: component.actionData[i].taskDetail.title
           } 
         compData.series.push(item);
         }
@@ -183,6 +184,7 @@ export async function fetchComponentsBySection(
           const itemData = {
             id: item.mediaId,
             mediaUrl: item.mediaUrl,
+            title: component.navigation.page,
           }
           compData.series.push(itemData);
         }

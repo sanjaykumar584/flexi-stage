@@ -163,21 +163,6 @@ const Index = () => {
                 Choose a section and manage the order of components and their series.
               </p>
             </div>
-            <div className="w-full sm:w-64">
-              <label className="text-sm text-muted-foreground mb-2 block">Select section</label>
-              <Select value={selectedSection} onValueChange={setSelectedSection}>
-                <SelectTrigger>
-                  <SelectValue placeholder={loadingSections ? "Loading sections..." : "Pick a section"} />
-                </SelectTrigger>
-                <SelectContent className="z-50 bg-popover/95 backdrop-blur supports-[backdrop-filter]:bg-popover/80 border">
-                  {sections?.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
-                      {s.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
             <Button onClick={() => submitOrder(selectedSection as string, components)}>
               Submit
             </Button>
@@ -188,9 +173,29 @@ const Index = () => {
       <main className="container py-8">
         <section aria-labelledby="components-heading">
           <div className="flex items-center justify-between mb-4">
-            <h2 id="components-heading" className="text-xl font-semibold">
-              Components {currentSectionLabel ? `in ${currentSectionLabel}` : ""}
-            </h2>
+            <div className="flex items-center gap-4">
+              <h2 id="components-heading" className="text-xl font-semibold">
+                Components 
+              </h2>
+              
+              {/* Navigation Tabs */}
+              <div className="flex items-center gap-6">
+                {sections?.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => setSelectedSection(section.id)}
+                    className={`relative px-2 py-1 text-md font-medium transition-all duration-200 ${
+                      selectedSection === section.id
+                        ? 'text-primary border-b-2 border-primary'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {section.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
             <span className="text-sm text-muted-foreground">Drag anywhere to reorder</span>
           </div>
 
@@ -240,20 +245,17 @@ const Index = () => {
                                             {comp.series.map((s) => (
                                               <DraggableRow key={s.id} id={s.id}>
                                                 {({ handleProps }) => (
-                                                  <li {...handleProps} className="min-w-[220px] flex items-center gap-3 rounded-md border bg-card/80 backdrop-blur text-card-foreground p-3 shadow-md transition-transform hover:scale-[1.02] cursor-grab active:cursor-grabbing">
+                                                  <li {...handleProps} className="min-w-[100px] max-w-[150px] rounded-md border bg-card/80 backdrop-blur shadow-md transition-transform hover:scale-[1.02] cursor-grab active:cursor-grabbing overflow-hidden">
                                                     {s.mediaUrl ? (
                                                       <img
                                                         src={s.mediaUrl}
                                                         alt={s.title ? s.title : "series thumbnail"}
-                                                        className="h-20 w-20 rounded-md object-cover border"
+                                                        className="h-full w-full object-cover"
                                                         loading="lazy"
                                                       />
                                                     ) : (
-                                                      <div className="h-20 w-20 rounded-md border bg-muted" />
+                                                      <div className="h-full w-full bg-muted" />
                                                     )}
-                                                    <div className="flex-1 min-w-0">
-                                                      <span className="block text-sm font-medium truncate">{s.title ?? "Untitled"}</span>
-                                                    </div>
                                                   </li>
                                                 )}
                                               </DraggableRow>
