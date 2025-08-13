@@ -241,26 +241,28 @@ const Index = () => {
                                           items={comp.series.map((s) => s.id)}
                                           strategy={horizontalListSortingStrategy}
                                         >
-                                          <ul className="flex gap-3 overflow-x-auto py-1">
-                                            {comp.series.map((s) => (
-                                              <DraggableRow key={s.id} id={s.id}>
-                                                {({ handleProps }) => (
-                                                  <li {...handleProps} className="min-w-[100px] max-w-[150px] rounded-md border bg-card/80 backdrop-blur shadow-md transition-transform hover:scale-[1.02] cursor-grab active:cursor-grabbing overflow-hidden">
-                                                    {s.mediaUrl ? (
-                                                      <img
-                                                        src={s.mediaUrl}
-                                                        alt={s.title ? s.title : "series thumbnail"}
-                                                        className="h-full w-full object-cover"
-                                                        loading="lazy"
-                                                      />
-                                                    ) : (
-                                                      <div className="h-full w-full bg-muted" />
-                                                    )}
-                                                  </li>
-                                                )}
-                                              </DraggableRow>
-                                            ))}
-                                          </ul>
+                                          <div className="overflow-x-auto">
+                                            <ul className="flex gap-3 py-1 min-w-max">
+                                              {comp.series.map((s) => (
+                                                <DraggableRow key={s.id} id={s.id}>
+                                                  {({ handleProps }) => (
+                                                    <li {...handleProps} className="min-w-[100px] max-w-[150px] rounded-md border bg-card/80 backdrop-blur shadow-md transition-transform hover:scale-[1.02] cursor-grab active:cursor-grabbing overflow-hidden">
+                                                      {s.mediaUrl ? (
+                                                        <img
+                                                          src={s.mediaUrl}
+                                                          alt={s.title ? s.title : "series thumbnail"}
+                                                          className="h-full w-full object-cover"
+                                                          loading="lazy"
+                                                        />
+                                                      ) : (
+                                                        <div className="h-full w-full bg-muted" />
+                                                      )}
+                                                    </li>
+                                                  )}
+                                                </DraggableRow>
+                                              ))}
+                                            </ul>
+                                          </div>
                                         </SortableContext>
                                       </DndContext>
                                     )}
