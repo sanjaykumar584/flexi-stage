@@ -40,6 +40,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { toast } from "sonner";
 import marvelHero from "../assets/marvel-hero.jpg";
@@ -87,6 +88,8 @@ const Index = () => {
     queryKey: ["sections"],
     queryFn: fetchSections,
   });
+
+  const navigate = useNavigate();
 
   const [selectedSection, setSelectedSection] = useState<string | undefined>();
 
@@ -220,8 +223,20 @@ const Index = () => {
                           </div>
                           <Card onClick={() => document.getElementById(`trigger-${comp.id}`)?.click()} {...handleProps} className="flex-1 relative animate-fade-in bg-card/90 border border-border/60 shadow-xl cursor-grab active:cursor-grabbing">
                             <CardHeader className="py-3">
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center justify-between gap-3">
                                 <CardTitle className="text-base">{comp.name}</CardTitle>
+                                {(comp.tag === 'allSeries' || comp.name?.toLowerCase() === 'all series') && (
+                                  <Button
+                                    size="sm"
+                                    variant="secondary"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigate('/all-series', { state: { series: comp.series, title: comp.name } });
+                                    }}
+                                  >
+                                    View all
+                                  </Button>
+                                )}
                               </div>
                             </CardHeader>
                             <CardContent className="pt-0">
